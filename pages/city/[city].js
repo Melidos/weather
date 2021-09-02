@@ -19,7 +19,7 @@ export default function City(props) {
         }}
       >
         <GoogleMapReact
-          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
+          key={process.env.REACT_APP_GOOGLE_MAP_API_KEY}
           defaultCenter={{
             lat: props.data.coord.lat,
             lng: props.data.coord.lon,
