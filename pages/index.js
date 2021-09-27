@@ -1,8 +1,30 @@
-import { ListGroup, ListGroupItem } from "react-bootstrap";
+import { Container, ListGroupItem } from "react-bootstrap";
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import GoogleMapReact from "google-map-react";
 
-export default function Home() {
+export default function Home(props) {
+  let [loadingPos, setLoadingPos] = useState(true);
+  let [geoloc, setGeoloc] = useState(null);
+  let [geolocError, setGeolocError] = useState(null);
+
+  useEffect(() => {
+    const geo = navigator.geolocation;
+
+    geo.getCurrentPosition(
+      (pos) => {
+        console.log(pos);
+        setGeoloc(pos);
+        setLoadingPos(false);
+      },
+      (err) => {
+        console.error("Error: " + err.message);
+        setGeolocError(err.message);
+      }
+    );
+  });
+
   const cities = [
     { id: 2988507, name: "Paris" },
     { id: 2995469, name: "Marseille" },
@@ -22,19 +44,44 @@ export default function Home() {
   ];
 
   return (
-    <ListGroup className='pt-2'>
+    <Container>
       <Head>
-        <title>Villes principales de France</title>
+        <title>Meteo à {geoloc}</title>
       </Head>
-      {cities.map((city) => {
-        return (
-          <ListGroupItem key={city.id}>
-            <Link href={`/city/${encodeURIComponent(city.id)}`} passHref>
-              <a>{city.name}</a>
-            </Link>
-          </ListGroupItem>
-        );
-      })}
-    </ListGroup>
+      <Container
+        style={{
+          height: "30vh",
+          margin: "0 auto",
+          padding: "20px 0",
+        }}
+      >
+        {" "}
+        {geolocError ? (
+          "Error getting localisation: " + geolocError
+        ) : loadingPos ? (
+          "Loading your location"
+        ) : (
+          <GoogleMapReact
+            bootstrapURLKeys={{
+              key: props.googleAPI,
+              libraries: "places",
+            }}
+            defaultCenter={{
+              lat: geoloc.coords.latitude,
+              lng: geoloc.coords.longitude,
+            }}
+            defaultZoom={11}
+          ></GoogleMapReact>
+        )}
+      </Container>
+    </Container>
   );
+}
+
+export async function getStaticProps(params) {
+  return {
+    props: {
+      googleAPI: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+    },
+  };
 }
