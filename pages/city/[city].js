@@ -75,15 +75,24 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(params) {
-  const data = await axios
-    .get(
+  let searchString = "";
+  if (isNaN(parseInt(params.params.city))) {
+    searchString =
+      "http://api.openweathermap.org/data/2.5/weather?q=" +
+      params.params.city +
+      "&appid=" +
+      process.env.REACT_APP_API_KEY +
+      "&units=metric&lang=fr";
+  } else {
+    searchString =
       "http://api.openweathermap.org/data/2.5/weather?id=" +
-        params.params.city +
-        "&appid=" +
-        process.env.REACT_APP_API_KEY +
-        "&units=metric&lang=fr"
-    )
-    .then((res) => res.data);
+      params.params.city +
+      "&appid=" +
+      process.env.REACT_APP_API_KEY +
+      "&units=metric&lang=fr";
+  }
+
+  const data = await axios.get(searchString).then((res) => res.data);
 
   return {
     props: {
