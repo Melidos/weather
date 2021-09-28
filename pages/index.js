@@ -21,7 +21,7 @@ export default function Home(props) {
 
         axios
           .get(
-            "http://api.openweathermap.org/geo/1.0/reverse?lat=" +
+            "https://api.openweathermap.org/geo/1.0/reverse?lat=" +
               pos.coords.latitude +
               "&lon=" +
               pos.coords.longitude +
