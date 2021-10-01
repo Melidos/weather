@@ -8,12 +8,17 @@ export default function Navsearch() {
   let [search, setSearch] = useState();
   const router = useRouter();
 
+  var timeout = null;
+
   useEffect(() => {
-    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("mousedown", handleClick, { useCapture: false });
   });
 
   function handleClick(e) {
-    if (e.target.id !== "searchFormInput")
+    if (
+      e.target.id !== "searchFormInput" &&
+      e.target.className !== "dropdown-item"
+    )
       document.getElementById("searchResultAutocomplete").innerHTML = "";
   }
 
@@ -42,17 +47,21 @@ export default function Navsearch() {
               id='searchFormInput'
               aria-label='Rechercher'
               onChange={(e) => {
-                setSearch(
-                  filterCities(
-                    e.target.value
-                      .normalize("NFD")
-                      .replace(/[\u0300-\u036f]/g, "")
-                      .toLowerCase()
-                      .replace(/[-:;,\/\\]/g, " ")
-                      .replace("  ", " ")
-                  )
+                if (timeout) clearTimeout(timeout);
+                timeout = setTimeout(
+                  () =>
+                    setSearch(
+                      filterCities(
+                        e.target.value
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")
+                          .toLowerCase()
+                          .replace(/[-:;,\/\\]/g, " ")
+                          .replace("  ", " ")
+                      )
+                    ),
+                  500
                 );
-                console.log(search);
               }}
               onFocus={(e) => {
                 setSearch(
@@ -65,7 +74,6 @@ export default function Navsearch() {
                       .replace("  ", " ")
                   )
                 );
-                console.log(search);
               }}
             />
             <div
@@ -80,7 +88,9 @@ export default function Navsearch() {
               id='searchResultAutocomplete'
             ></div>
           </Container>
-          <Button variant='outline-info'>Search</Button>
+          <Button variant='outline-info' type='submit'>
+            Search
+          </Button>
         </Form>
       </Navbar>
     </>
