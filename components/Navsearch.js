@@ -22,6 +22,50 @@ export default function Navsearch() {
       document.getElementById("searchResultAutocomplete").innerHTML = "";
   }
 
+  function filterCities(name) {
+    var results = [];
+    if (name !== "") {
+      results = cities
+        .filter((c) =>
+          c.name
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .replace(/[-:;,\/\\]/g, " ")
+            .replace("  ", " ")
+            .startsWith(name)
+        )
+        .sort((a, b) => a.name.length - b.name.length)
+        .slice(0, 10);
+    }
+    AddandResetSeachResultAutocomplete(results);
+
+    return results[0];
+  }
+
+  function AddandResetSeachResultAutocomplete(searchResult) {
+    const parent = document.getElementById("searchResultAutocomplete");
+    parent.innerHTML = "";
+    if (searchResult.length === 0) {
+      var e = document.createElement("div");
+      e.setAttribute("class", "dropdown-item");
+      e.setAttribute("href", "#");
+      e.innerHTML = "Aucun résultat";
+      parent.appendChild(e);
+    } else {
+      searchResult.forEach((element) => {
+        var e = document.createElement("div");
+        e.setAttribute("class", "dropdown-item");
+        e.onclick = () => {
+          parent.innerHTML = "";
+          router.push("/city/" + element.id);
+        };
+        e.innerHTML = element.name;
+        parent.appendChild(e);
+      });
+    }
+  }
+
   return (
     <>
       <Navbar bg='light' expand='lg' className='px-2'>
@@ -97,49 +141,7 @@ export default function Navsearch() {
   );
 }
 
-function filterCities(name) {
-  var results = [];
-  if (name !== "") {
-    results = cities
-      .filter((c) =>
-        c.name
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .toLowerCase()
-          .replace(/[-:;,\/\\]/g, " ")
-          .replace("  ", " ")
-          .startsWith(name)
-      )
-      .sort((a, b) => a.name.length - b.name.length)
-      .slice(0, 10);
-  }
-  AddandResetSeachResultAutocomplete(results);
-
-  return results[0];
-}
-
-function AddandResetSeachResultAutocomplete(searchResult) {
-  const parent = document.getElementById("searchResultAutocomplete");
-  parent.innerHTML = "";
-  if (searchResult.length === 0) {
-    var e = document.createElement("a");
-    e.setAttribute("class", "dropdown-item");
-    e.setAttribute("href", "#");
-    e.innerHTML = "Aucun résultat";
-    parent.appendChild(e);
-  } else {
-    searchResult.forEach((element) => {
-      var e = document.createElement("a");
-      e.setAttribute("class", "dropdown-item");
-      e.setAttribute("href", "/city/" + element.id);
-      e.innerHTML = element.name;
-      parent.appendChild(e);
-    });
-  }
-}
-
 /*
 TODO:
--Ajouter un delai sur la recherche
 -Ajouter une navigation en utilisant les fleches directionnelles sur l'input
 */
