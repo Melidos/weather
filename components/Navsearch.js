@@ -12,7 +12,57 @@ export default function Navsearch() {
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClick, { useCapture: false });
+    document
+      .getElementById("searchFormInput")
+      .addEventListener("keydown", handleKeydown, { useCapture: false });
   });
+
+  function handleKeydown(e) {
+    const sra = document.getElementById("searchResultAutocomplete");
+    const sfi = document.getElementById("searchFormInput");
+    if (e.key == "ArrowDown" && e.target.id === "searchFormInput") {
+      sra.firstChild.focus();
+    }
+    if (
+      e.key == "ArrowDown" &&
+      e.target.className === "dropdown-item" &&
+      e.target.nextSibling
+    ) {
+      e.target.nextSibling.focus();
+    }
+    if (
+      e.key == "ArrowDown" &&
+      e.target.className === "dropdown-item" &&
+      !e.target.nextSibling
+    ) {
+      sfi.focus();
+    }
+    if (e.key == "ArrowUp" && e.target.id === "searchFormInput") {
+      sra.lastChild.focus();
+    }
+    if (
+      e.key == "ArrowUp" &&
+      e.target.className === "dropdown-item" &&
+      e.target.previousSibling
+    ) {
+      e.target.previousSibling.focus();
+    }
+    if (
+      e.key == "ArrowUp" &&
+      e.target.className === "dropdown-item" &&
+      !e.target.previousSibling
+    ) {
+      sfi.focus();
+    }
+    if (
+      e.key == "Enter" &&
+      e.target.className === "dropdown-item" &&
+      e.target.attributes.key.value !== "0"
+    ) {
+      sra.innerHTML = "";
+      router.push("/city/" + e.target.attributes.key.value);
+    }
+  }
 
   function handleClick(e) {
     if (
@@ -26,15 +76,7 @@ export default function Navsearch() {
     var results = [];
     if (name !== "") {
       results = cities
-        .filter((c) =>
-          c.name
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLowerCase()
-            .replace(/[-:;,\/\\]/g, " ")
-            .replace("  ", " ")
-            .startsWith(name)
-        )
+        .filter((c) => normalizeName(c.name).startsWith(name))
         .sort((a, b) => a.name.length - b.name.length)
         .slice(0, 10);
     }
@@ -50,20 +92,38 @@ export default function Navsearch() {
       var e = document.createElement("div");
       e.setAttribute("class", "dropdown-item");
       e.setAttribute("href", "#");
+      e.setAttribute("tabindex", "0");
+      e.setAttribute("key", "0");
+      e.addEventListener("keydown", handleKeydown, {
+        useCapture: false,
+      });
+
       e.innerHTML = "Aucun résultat";
       parent.appendChild(e);
     } else {
       searchResult.forEach((element) => {
         var e = document.createElement("div");
         e.setAttribute("class", "dropdown-item");
+        e.setAttribute("tabindex", "0");
+        e.setAttribute("key", element.id);
         e.onclick = () => {
           parent.innerHTML = "";
           router.push("/city/" + element.id);
         };
+        e.addEventListener("keydown", handleKeydown, { useCapture: false });
         e.innerHTML = element.name;
         parent.appendChild(e);
       });
     }
+  }
+
+  function normalizeName(name) {
+    return name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[-:;,\/\\]/g, " ")
+      .replace("  ", " ");
   }
 
   return (
@@ -93,31 +153,12 @@ export default function Navsearch() {
               onChange={(e) => {
                 if (timeout) clearTimeout(timeout);
                 timeout = setTimeout(
-                  () =>
-                    setSearch(
-                      filterCities(
-                        e.target.value
-                          .normalize("NFD")
-                          .replace(/[\u0300-\u036f]/g, "")
-                          .toLowerCase()
-                          .replace(/[-:;,\/\\]/g, " ")
-                          .replace("  ", " ")
-                      )
-                    ),
+                  () => setSearch(filterCities(normalizeName(e.target.value))),
                   500
                 );
               }}
               onFocus={(e) => {
-                setSearch(
-                  filterCities(
-                    e.target.value
-                      .normalize("NFD")
-                      .replace(/[\u0300-\u036f]/g, "")
-                      .toLowerCase()
-                      .replace(/[-:;,\/\\]/g, " ")
-                      .replace("  ", " ")
-                  )
-                );
+                setSearch(filterCities(normalizeName(e.target.value)));
               }}
             />
             <div
@@ -140,8 +181,3 @@ export default function Navsearch() {
     </>
   );
 }
-
-/*
-TODO:
--Ajouter une navigation en utilisant les fleches directionnelles sur l'input
-*/
