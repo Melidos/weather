@@ -5,20 +5,13 @@ import { useEffect, useState } from "react";
 import Router from "next/router";
 
 export default function Home(props) {
-  let [loadingPos, setLoadingPos] = useState(true);
-  let [geoloc, setGeoloc] = useState(null);
   let [geolocError, setGeolocError] = useState(null);
-  let [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
     const geo = navigator.geolocation;
 
     geo.getCurrentPosition(
       (pos) => {
-        console.log(pos);
-        setGeoloc(pos);
-        setLoadingPos(false);
-
         axios
           .get(
             "https://api.openweathermap.org/geo/1.0/reverse?lat=" +
@@ -29,16 +22,15 @@ export default function Home(props) {
               props.OWMAPI
           )
           .then((res) => {
-            const name = res.data[0].name;
-
-            console.log(res.data[0]);
-
-            Router.push("/city/" + name);
+            Router.push("/city/" + res.data[0].name);
           });
       },
       (err) => {
-        console.error("Error: " + err.message);
-        setGeolocError(err.message);
+        setGeolocError(
+          err.message === "User denied Geolocation"
+            ? "Vous devez authoriser la géolocalisation"
+            : err.message
+        );
       }
     );
   });
@@ -46,9 +38,9 @@ export default function Home(props) {
   return (
     <Container>
       <Head>
-        <title>Meteo à {weatherData?.name ?? "undefined"}</title>
+        <title>Erreur de géolocalisation</title>
       </Head>
-      {geolocError ? "Error getting localisation: " + geolocError : ""}
+      {geolocError ? "Erreur: " + geolocError : ""}
     </Container>
   );
 }
