@@ -1,7 +1,6 @@
 import axios from "axios";
 import React from "react";
 import { Container, Table } from "react-bootstrap";
-import cities from "../../public/city.list.json";
 import GoogleMapReact from "google-map-react";
 import Head from "next/head";
 
@@ -34,23 +33,23 @@ export default function City(props) {
         <tbody>
           <tr>
             <td>Météo</td>
-            <td>{props.data.weather[0].main}</td>
+            <td>{props.main}</td>
           </tr>
           <tr>
             <td>Température</td>
-            <td>{props.data.main.temp} °C</td>
+            <td>{props.temperature} °C</td>
           </tr>
           <tr>
             <td>Température Ressentie</td>
-            <td>{props.data.main.feels_like} °C</td>
+            <td>{props.feels_like} °C</td>
           </tr>
           <tr>
             <td>Température Minimum</td>
-            <td>{props.data.main.temp_min} °C</td>
+            <td>{props.temp_min} °C</td>
           </tr>
           <tr>
             <td>Température Maximum</td>
-            <td>{props.data.main.temp_max} °C</td>
+            <td>{props.temp_max} °C</td>
           </tr>
           <tr>
             <td>Pression</td>
@@ -80,9 +79,9 @@ export async function getStaticProps(params) {
     searchString =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
       params.params.city +
-      "&appid=" +
+      "&lang=fr&appid=" +
       process.env.REACT_APP_API_KEY +
-      "&units=metric&lang=fr";
+      "&units=metric";
   } else {
     searchString =
       "https://api.openweathermap.org/data/2.5/weather?id=" +
@@ -94,8 +93,19 @@ export async function getStaticProps(params) {
 
   const data = await axios.get(searchString).then((res) => res.data);
 
+  console.log(data);
+
   return {
     props: {
+      main: data.weather[0].description.replace(/^[a-z]/g, (c) =>
+        c.toUpperCase()
+      ),
+      temperature: parseFloat(data.main.temp).toFixed(0),
+      temp_min: parseFloat(data.main.temp_min).toFixed(0),
+      temp_max: parseFloat(data.main.temp_max).toFixed(0),
+      name: data.name,
+      country: data.sys.country,
+      icon: "http://openweathermap.org/img/wn/" + data.weather.icon + "@2x.png",
       data,
       revalidate: 3600,
       googleAPI: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
