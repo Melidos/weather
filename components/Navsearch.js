@@ -174,7 +174,7 @@ export default function Navsearch() {
             ></div>
           </Container>
           <Button variant='outline-info' type='submit'>
-            Search
+            Rechercher
           </Button>
         </Form>
       </Navbar>
