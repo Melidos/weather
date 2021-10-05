@@ -1,6 +1,7 @@
 import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import { Container, Navbar, Form, FormControl, Button } from "react-bootstrap";
+import styles from "../styles/NavSearch.module.css";
 
 import cities from "../public/city.list.json";
 
@@ -13,13 +14,13 @@ export default function Navsearch() {
   useEffect(() => {
     document.addEventListener("mousedown", handleClick, { useCapture: false });
     document
-      .getElementById("searchFormInput")
+      .getElementById(styles.searchFormInput)
       .addEventListener("keydown", handleKeydown, { useCapture: false });
   });
 
   function handleKeydown(e) {
-    const sra = document.getElementById("searchResultAutocomplete");
-    const sfi = document.getElementById("searchFormInput");
+    const sra = document.getElementById(styles.searchResultAutocomplete);
+    const sfi = document.getElementById(styles.searchFormInput);
     if (e.key == "ArrowDown" && e.target.id === "searchFormInput") {
       sra.firstChild.focus();
     }
@@ -69,7 +70,7 @@ export default function Navsearch() {
       e.target.id !== "searchFormInput" &&
       e.target.className !== "dropdown-item"
     )
-      document.getElementById("searchResultAutocomplete").innerHTML = "";
+      document.getElementById(styles.searchResultAutocomplete).innerHTML = "";
   }
 
   function filterCities(name) {
@@ -86,7 +87,7 @@ export default function Navsearch() {
   }
 
   function AddandResetSeachResultAutocomplete(searchResult) {
-    const parent = document.getElementById("searchResultAutocomplete");
+    const parent = document.getElementById(styles.searchResultAutocomplete);
     parent.innerHTML = "";
     if (searchResult.length === 0) {
       var e = document.createElement("div");
@@ -127,57 +128,42 @@ export default function Navsearch() {
   }
 
   return (
-    <>
-      <Navbar bg='light' expand='lg' className='px-2'>
-        <Form
-          className='d-flex mx-auto'
-          style={{ width: "95%" }}
-          onSubmit={(e) => {
-            if (search !== undefined) {
-              document.getElementById("searchResultAutocomplete").innerHTML =
-                "";
-              router.push("/city/" + search.id);
-              e.preventDefault();
-            } else {
-              e.preventDefault();
-            }
-          }}
-        >
-          <Container fluid>
-            <FormControl
-              type='search'
-              placeholder='Rechercher'
-              className='mr-2'
-              id='searchFormInput'
-              aria-label='Rechercher'
-              onChange={(e) => {
-                if (timeout) clearTimeout(timeout);
-                timeout = setTimeout(
-                  () => setSearch(filterCities(normalizeName(e.target.value))),
-                  500
-                );
-              }}
-              onFocus={(e) => {
-                setSearch(filterCities(normalizeName(e.target.value)));
-              }}
-            />
-            <div
-              style={{
-                zIndex: "1",
-                position: "absolute",
-                background: "white",
-                width: "94%",
-                border: "1px solid gainsboro",
-                borderRadius: "0 0 5px 5px",
-              }}
-              id='searchResultAutocomplete'
-            ></div>
-          </Container>
-          <Button variant='outline-info' type='submit'>
-            Rechercher
-          </Button>
-        </Form>
-      </Navbar>
-    </>
+    <Navbar expand='lg' className='px-2' id={styles.mainNav}>
+      <Form
+        className='d-flex mx-auto'
+        id={styles.mainForm}
+        onSubmit={(e) => {
+          if (search !== undefined) {
+            document.getElementById(styles.searchResultAutocomplete).innerHTML =
+              "";
+            router.push("/city/" + search.id);
+            e.preventDefault();
+          } else {
+            e.preventDefault();
+          }
+        }}
+      >
+        <Container fluid>
+          <FormControl
+            type='search'
+            placeholder='Rechercher'
+            className='mr-2'
+            id={styles.searchFormInput}
+            aria-label='Rechercher'
+            onChange={(e) => {
+              if (timeout) clearTimeout(timeout);
+              timeout = setTimeout(
+                () => setSearch(filterCities(normalizeName(e.target.value))),
+                500
+              );
+            }}
+            onFocus={(e) => {
+              setSearch(filterCities(normalizeName(e.target.value)));
+            }}
+          />
+          <div id={styles.searchResultAutocomplete}></div>
+        </Container>
+      </Form>
+    </Navbar>
   );
 }

@@ -4,19 +4,15 @@ import { Container, Table } from "react-bootstrap";
 import GoogleMapReact from "google-map-react";
 import Head from "next/head";
 
+import styles from "../../../styles/city.v1.module.css";
+
 export default function City(props) {
   return (
     <Container>
       <Head>
         <title>Meteo à {props.data.name}</title>
       </Head>
-      <Container
-        style={{
-          height: "30vh",
-          margin: "0 auto",
-          padding: "20px 0",
-        }}
-      >
+      <Container id={styles.googleMapsContainer}>
         <GoogleMapReact
           bootstrapURLKeys={{
             key: props.googleAPI,
@@ -29,7 +25,7 @@ export default function City(props) {
           defaultZoom={11}
         ></GoogleMapReact>
       </Container>
-      <Table striped bordered hover>
+      <Table bordered hover id={styles.mainTable}>
         <tbody>
           <tr>
             <td>Météo</td>

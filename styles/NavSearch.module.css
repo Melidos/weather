@@ -1,0 +1,29 @@
+#mainNav {
+  z-index: 1;
+  background: none !important;
+}
+
+#mainForm {
+  width: 95%;
+}
+
+#searchResultAutocomplete {
+  z-index: 1;
+  position: relative;
+  background: white;
+  width: 100%;
+  border-radius: 0 0 5px 5px;
+}
+
+#searchFormInput {
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 2px solid white;
+  color: white;
+}
+
+#searchFormInput::placeholder {
+  color: white;
+}

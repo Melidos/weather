@@ -7,7 +7,9 @@ export default function Layout({ children }) {
   return (
     <>
       <Navsearch />
-      <Container>{children}</Container>
+      <Container fluid className='m-0 p-0'>
+        {children}
+      </Container>
     </>
   );
 }

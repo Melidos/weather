@@ -1,0 +1,10 @@
+/* city/[city]/v1 */
+#googleMapsContainer {
+  height: 30vh;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+#mainTable {
+  color: white;
+}

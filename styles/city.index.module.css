@@ -1,0 +1,70 @@
+/* city/[city]/Index */
+#mainContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 70px 0 0 0;
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  font-size: 1.5rem;
+}
+
+#cityLocation {
+  font-size: 5em;
+}
+
+#timeUpdate {
+  color: gainsboro;
+}
+
+#logoWeather {
+  height: 20em;
+}
+
+#mainTemp {
+  font-size: 4em;
+}
+
+#minTemp {
+  font-size: 3em;
+}
+
+#maxTemp {
+  font-size: 3em;
+}
+
+#secondaryContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 50%;
+  margin: 0 auto;
+}
+
+#mainWeather {
+  font-weight: normal;
+  font-size: 3em;
+}
+
+@media screen and (max-width: 800px) {
+  #secondaryContainer {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #secondaryContainer {
+    width: 100%;
+  }
+
+  #mainContainer {
+    font-size: 0.75rem;
+  }
+}

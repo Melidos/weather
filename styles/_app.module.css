@@ -1,0 +1,10 @@
+/* _app */
+#mainAppContainer {
+  margin-top: 35vh;
+}
+
+#loadingPageSpinner {
+  height: 15rem;
+  width: 15rem;
+  color: white;
+}
