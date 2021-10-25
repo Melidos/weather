@@ -1,26 +1,26 @@
 {
   "name": "weather",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' next build && scp -r -P 50000 .next root@5.196.1.57:/var/lib/jenkins/workspace/weather/",
+    "build-dev": "NODE_OPTIONS='--max-old-space-size=4096' next build",
     "start": "PORT=5003 next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "^1.12.1",
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
-    "google-map-react": "^2.1.10",
     "leven-sort": "^3.0.0",
     "next": "11.1.0",
     "react": "17.0.2",
-    "react-bootstrap": "^2.0.0-beta.4",
-    "react-dom": "17.0.2"
+    "react-bootstrap": "^2.0.0-beta.4"
   },
   "devDependencies": {
     "eslint": "7.32.0",
-    "eslint-config-next": "11.1.0"
+    "eslint-config-next": "11.1.0",
+    "@googlemaps/js-api-loader": "^1.12.1",
+    "google-map-react": "^2.1.10"
   }
 }
