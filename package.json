@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "NODE_OPTIONS='--max-old-space-size=4096' next build && scp -r -P 50000 .next root@5.196.1.57:/var/lib/jenkins/workspace/weather/",
-    "build-dev": "NODE_OPTIONS='--max-old-space-size=4096' next build",
+    "build-dev": "NODE_OPTIONS='--max-old-space-size=4096' next build && scp -r -P 50000 .next root@5.196.1.57:/var/lib/jenkins/workspace/weather/",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' next build",
     "start": "PORT=5003 next start",
     "lint": "next lint"
   },
