@@ -1,6 +1,6 @@
 import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
-import { Container, Navbar, Form, FormControl, Button } from "react-bootstrap";
+import { Container, Navbar, Form, FormControl } from "react-bootstrap";
 import styles from "../styles/NavSearch.module.css";
 
 import cities from "../public/city.list.json";
@@ -89,11 +89,11 @@ export default function Navsearch() {
   function AddandResetSeachResultAutocomplete(searchResult) {
     const parent = document.getElementById(styles.searchResultAutocomplete);
     parent.innerHTML = "";
+    var e = document.createElement("div");
     if (searchResult.length === 0) {
-      var e = document.createElement("div");
       e.setAttribute("class", "dropdown-item");
-      e.setAttribute("href", "#");
       e.setAttribute("tabindex", "0");
+      e.setAttribute("href", "#");
       e.setAttribute("key", "0");
       e.addEventListener("keydown", handleKeydown, {
         useCapture: false,
@@ -103,7 +103,7 @@ export default function Navsearch() {
       parent.appendChild(e);
     } else {
       searchResult.forEach((element) => {
-        var e = document.createElement("div");
+        e = document.createElement("div");
         e.setAttribute("class", "dropdown-item");
         e.setAttribute("tabindex", "0");
         e.setAttribute("key", element.id);
