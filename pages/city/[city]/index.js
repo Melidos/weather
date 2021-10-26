@@ -96,7 +96,7 @@ export async function getStaticProps(params) {
       name: data.name,
       country: data.sys.country,
       icon:
-        "http://openweathermap.org/img/wn/" + data.weather[0].icon + "@4x.png",
+        "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@4x.png",
       weather: data.weather[0].main,
       hours: new Intl.NumberFormat("fr-FR", {
         minimumIntegerDigits: 2,
@@ -108,6 +108,6 @@ export async function getStaticProps(params) {
         minimumIntegerDigits: 2,
       }).format(d.getSeconds()),
     },
-    revalidate: 3600,
+    revalidate: 600,
   };
 }

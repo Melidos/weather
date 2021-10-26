@@ -101,10 +101,11 @@ export async function getStaticProps(params) {
       temp_max: parseFloat(data.main.temp_max).toFixed(0),
       name: data.name,
       country: data.sys.country,
-      icon: "http://openweathermap.org/img/wn/" + data.weather.icon + "@2x.png",
+      icon:
+        "https://openweathermap.org/img/wn/" + data.weather.icon + "@2x.png",
       data,
-      revalidate: 3600,
       googleAPI: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
     },
+    revalidate: 600,
   };
 }
