@@ -7,8 +7,6 @@ import Head from "next/head";
 import styles from "../../../styles/city.v1.module.css";
 
 export default function City(props) {
-  console.log(props.googleAPI);
-
   return (
     <Container>
       <Head>
@@ -90,8 +88,6 @@ export async function getStaticProps(params) {
   }
 
   const data = await axios.get(searchString).then((res) => res.data);
-
-  console.log(data);
 
   return {
     props: {
