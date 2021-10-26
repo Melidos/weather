@@ -39,7 +39,7 @@ export default function City(props) {
         </h1>
         <span id={styles.timeUpdate}>
           Mis à jour à{" "}
-          {parseInt(props.hours) + new Date().getTimezoneOffset() / 60}:
+          {parseInt(props.hours) - new Date().getTimezoneOffset() / 60}:
           {props.minutes}:{props.seconds}
         </span>
       </div>
