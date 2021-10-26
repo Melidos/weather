@@ -7,6 +7,8 @@ import Head from "next/head";
 import styles from "../../../styles/city.v1.module.css";
 
 export default function City(props) {
+  console.log(props.googleAPI);
+
   return (
     <Container>
       <Head>
