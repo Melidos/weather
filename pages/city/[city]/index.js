@@ -98,7 +98,6 @@ export async function getStaticProps(params) {
       icon:
         "http://openweathermap.org/img/wn/" + data.weather[0].icon + "@4x.png",
       weather: data.weather[0].main,
-      revalidate: 3600,
       hours: new Intl.NumberFormat("fr-FR", {
         minimumIntegerDigits: 2,
       }).format(d.getHours()),
@@ -109,5 +108,6 @@ export async function getStaticProps(params) {
         minimumIntegerDigits: 2,
       }).format(d.getSeconds()),
     },
+    revalidate: 3600,
   };
 }
