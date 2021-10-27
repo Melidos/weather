@@ -1,9 +1,10 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Image } from "react-bootstrap";
 import Head from "next/head";
 
 import styles from "../../../styles/city.index.module.css";
+import Router from "next/router";
 
 export default function City(props) {
   const BACKGROUNDS = {
@@ -61,11 +62,7 @@ export default function City(props) {
   );
 }
 
-export async function getStaticPaths() {
-  return { paths: [], fallback: "blocking" };
-}
-
-export async function getStaticProps(params) {
+export async function getServerSideProps(params) {
   let searchString = "";
   if (isNaN(parseInt(params.params.city))) {
     searchString =
@@ -110,6 +107,5 @@ export async function getStaticProps(params) {
         minimumIntegerDigits: 2,
       }).format(d.getSeconds()),
     },
-    revalidate: 600,
   };
 }
